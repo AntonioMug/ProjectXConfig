@@ -1,0 +1,145 @@
+
+# ==============================================================
+# = API GATEWAY Server Zool JWT
+# ==============================================================
+
+server:
+  port: 5000
+
+spring:
+  application:
+    name: ZoolServer
+
+  main:
+    allow-bean-definition-overriding: true
+
+
+
+# ==============================================================
+# = Zuul Parameters
+# ==============================================================
+zuul:
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 60000
+  prefix: /gateway
+  stripPrefix: true
+  ignoredServices: '*'
+
+  # ==============================================================
+  # = Route Parameters
+  # ==============================================================
+  routes:
+    articoli:
+      path: /articoli/**
+      serviceId: ArticoliWebService
+      sensitive-headers: Cookie,Set-Cookie
+    accessi:
+      path: /utenti/**
+      serviceId: AccessiWebService
+      sensitive-headers: Cookie,Set-Cookie
+    allegato:
+      path: /allegati/**
+      service-id: AllegatoWebService
+      sensitive-headers: Cookie,Set-Cookie
+    recensioni:
+      path: /recensioni/**
+      service-id: RecensioniWebService
+      sensitive-headers: Cookie,Set-Cookie
+    acquisti:
+      path: /acquisti/**
+      service-id: AcquistiWebService
+      sensitive-headers: Cookie,Set-Cookie
+    indirizzi:
+      path: /indirizzi/**
+      service-id: IndirizziWebService
+      sensitive-headers: Cookie,Set-Cookie
+    amazon:
+      path: /amazon/**
+      service-id: AmazonDeveloperWebService
+      sensitive-headers: Cookie,Set-Cookie
+  ignored-headers:
+    - Access-Control-Allow-Credentials
+    - Access-Control-Allow-Origin
+ArticoliWebService:
+  ribbon:
+    ReadTimeout: 60000
+    ConnectTimeout: 20000
+    MaxTotalHttpConnections: 500
+    MaxConnectionsPerHost: 100
+AccessiWebService:
+  ribbon:
+    ReadTimeout: 30000
+    ConnectTimeout: 20000
+AllegatoWebService:
+  ribbon:
+    ReadTimeout: 30000
+    ConnectTimeout: 20000
+RecensioniWebService:
+  ribbon:
+    ReadTimeout: 30000
+    ConnectTimeout: 20000
+AcquistiWebService:
+  ribbon:
+    ReadTimeout: 30000
+    ConnectTimeout: 20000
+IndirizziWebService:
+  ribbon:
+    ReadTimeout: 30000
+    ConnectTimeout: 20000
+AmazonDeveloperWebService:
+  ribbon:
+    ReadTimeout: 60000
+    ConnectTimeout: 50000
+# ==============================================================
+# = Eureka Properties
+# = Nota: prima di attivare il servizio servono tre heartbeat
+# ==============================================================
+eureka:
+  # ==============================================================
+  # = Impostazioni Instance
+  # ==============================================================
+  instance:
+    #intervallo di attesa prima della rimozione del servizio (def 90 sec)
+    lease-expiration-duration-in-seconds: 60
+    #intervallo di invio dell'heartbeat (def 30 sec)
+    leaseRenewalIntervalInSeconds: 15
+    #id di identificazione dell'istanza
+    instanceId: 80-${spring.application.name}
+    #registrazione per indirizzo ip (defualt hostname)
+    preferIpAddress: true
+  # ==============================================================
+  # = Impostazioni Client
+  # ==============================================================
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://user:GruppoSI2020@eureka-env.eba-2cwsdcma.eu-south-1.elasticbeanstalk.com/eureka/
+    #time out di connessione in secondi al server Eureka (def 5 sec)
+    eureka-server-connect-timeout-seconds: 8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
